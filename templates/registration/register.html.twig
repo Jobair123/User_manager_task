@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<div class="login-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <!-- Header -->
+                        <div class="text-center mb-4">
+                            <i class="bi bi-person-plus display-4 text-primary"></i>
+                            <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
+                            <p class="text-muted">Join us today</p>
+                        </div>
+
+                        <!-- Flash Messages -->
+                        {% for flash_error in app.flashes('verify_email_error') %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                {{ flash_error }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+
+                        {% for label, messages in app.flashes %}
+                            {% for message in messages %}
+                                {% if label != 'verify_email_error' %}
+                                    <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+
+                        <!-- Registration Form -->
+                        {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+                            
+                            <!-- Name Field -->
+                            <div class="mb-3">
+                                <label for="{{ registrationForm.name.vars.id }}" class="form-label">
+                                    <i class="bi bi-person-fill"></i> Full Name
+                                </label>
+                                {{ form_widget(registrationForm.name, {
+                                    'attr': {
+                                        'class': 'form-control form-control-lg',
+                                        'placeholder': 'Enter your full name'
+                                    }
+                                }) }}
+                                <div class="invalid-feedback">
+                                    Please provide your name.
+                                </div>
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="mb-3">
+                                <label for="{{ registrationForm.email.vars.id }}" class="form-label">
+                                    <i class="bi bi-envelope-fill"></i> Email Address
+                                </label>
+                                {{ form_widget(registrationForm.email, {
+                                    'attr': {
+                                        'class': 'form-control form-control-lg',
+                                        'placeholder': 'Enter your email'
+                                    }
+                                }) }}
+                                <div class="invalid-feedback">
+                                    Please provide a valid email.
+                                </div>
+                            </div>
+
+                            <!-- Password Field -->
+                            <div class="mb-3">
+                                <label for="{{ registrationForm.plainPassword.vars.id }}" class="form-label">
+                                    <i class="bi bi-lock-fill"></i> Password
+                                </label>
+                                {{ form_widget(registrationForm.plainPassword, {
+                                    'attr': {
+                                        'class': 'form-control form-control-lg',
+                                        'placeholder': 'Create a password'
+                                    }
+                                }) }}
+                            
+                                <div class="invalid-feedback">
+                                    Please provide a password.
+                                </div>
+                            </div>
+
+                            <!-- Agree Terms Field -->
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    {{ form_widget(registrationForm.agreeTerms, {
+                                        'attr': {
+                                            'class': 'form-check-input'
+                                        }
+                                    }) }}
+                                    <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
+                                        I agree to the <a href="#" class="text-decoration-none">Terms and Conditions</a>
+                                    </label>
+                                </div>
+                                {{ form_errors(registrationForm.agreeTerms) }}
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-person-plus-fill"></i> Create Account
+                                </button>
+                            </div>
+                        {{ form_end(registrationForm) }}
+
+                        <!-- Login Link -->
+                        <div class="text-center">
+                            <p class="text-muted mb-0">Already have an account?</p>
+                            <a href="{{ path('app_login') }}" class="text-decoration-none">
+                                <i class="bi bi-box-arrow-in-right"></i> Sign in here
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional: Add form validation script -->
+<script>
+// Bootstrap form validation
+(function () {
+    'use strict'
+    
+    var forms = document.querySelectorAll('.needs-validation')
+    
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
+</script>
+{% endblock %}

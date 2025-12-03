@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+<h1>User Management</h1>
+
+<form method="post" action="{{ path('admin_bulk_action') }}">
+  <div class="toolbar" style="margin-bottom:1rem;">
+
+    <button name="action" value="block">Block</button>
+    <button name="action" value="unblock">Unblock</button>
+    <button name="action" value="delete">Delete</button>
+    <button name="action" value="email">Send Email</button>
+    <a href="{{ path('app_logout') }}"><button  >Logout</button></a>
+    
+  </div>
+     <label style="margin-left:1rem;">
+      <input type="checkbox" id="select-all"> Select All
+    </label>
+
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Last Login</th>
+        <th>Blocked</th>
+        <th>Verified</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td><input type="checkbox" name="selected[]" value="{{ user.id }}"></td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.lastLogin ? user.lastLogin|date('Y-m-d H:i') : 'Never' }}</td>
+        <td>{{ user.isBlocked ? 'Yes' : 'No' }}</td>
+        <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</form>
+
+<script>
+document.getElementById('select-all').addEventListener('change', function () {
+  document.querySelectorAll('input[name="selected[]"]').forEach(cb => cb.checked = this.checked);
+});
+</script>
+{% endblock %}
